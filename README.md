@@ -36,23 +36,6 @@ This project has several important directories:
 
 If your project has no dependencies and has not been compiled, you may not see the `lib` or `bin` directories.
 
-### How to test your work
-
-Automated tests that can help determine whether you have done the work correctly have been included within the `test` directory. Use them as follows. A [video tutorial](https://www.youtube.com/watch?v=Af6Ka0Bmflo) shows how to do this and overcome any problems:
-
-- Click the Run and Debug icon in the Visual Studio Code activity bar, then click the play button to run your code without using the automated tests. Do this prior to running the tests to make sure your program seems to behave correctly yourself.
-- Open the relevant test file, located within the `test` directory.
-- Click the Test icon (a beaker) in the Visual Studio Code activity bar and click the play button to run those tests. Tests that pass will be marked with a green checkmark, while those that fail will be marked with a red "X".
-- Each test that fails will show a message with some indication of what went wrong - these messages may help you pinpoint the source of the error.
-
-If you have trouble running the tests from within Visual Studio Code, you can do them from within a Terminal window, assuming the project directory is the current working directory (change `TestClassName` to the relevant name fo the test class.)
-
-```bash
-java -cp "bin:lib/*" org.junit.runner.JUnitCore edu.nyu.cs.TestClassName
-```
-
-Windows users should replace the `:` in `"bin:lib/*"` with a semi-colon, `;`, i.e. `"bin;lib/*"`
-
 ## How to submit this assignment
 
 Once you have completed the changes to th assignment, you are ready to submit it. Do this from within Visual Studio Code.
