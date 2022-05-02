@@ -1,10 +1,30 @@
-# Java Project Practice Run
+# Recursion Exercise
 
-Welcome to your first Java programming assignment.
+A little dive into understanding recursion in Java.
 
-## The goal
+## Instructions
 
-The goal of this assignment is to introduce you to the work environment you will use to complete assignments in this course.
+Choose one of the two given fractal generating programs and document it thoroughly, explaining how it works.
+
+### Javadoc comments
+
+Documentation must include full Javadoc comments, including:
+
+- the `author` tag should indicate "`@author Foo Barstein, with comments by Baz Bumberger (bf1234)`". Replace `"Baz Bumberger`" with your own name, and replace "`bf1234`" with your own NYU Net ID.
+- a description of the the entire program, and complete descriptions of all instance and class variables and methods.
+- for instance or class variables, be sure to explain how that variable is used throughout the rest of the program.
+- for each method, be sure to include a plain description of the method's purpose, and a detailed description of the process by which achieves that purpose.
+- for each method, also include a plain description of any parameters that the method accepts as well as a description of its return value, if any.
+
+### Additional comments
+
+- add a comment above any while or for loops describing the high-level purpose of the loop
+- add a comment above any recursive elements describing the high-level purpose of the recursion.
+- indicate any flags and state their purpose.
+- for any variable that is incremented or decremented, explain why.
+- for any method calls, please explain the purpose of the method call and any arguments passed to the method.
+- if the program inherits from another class, be sure to point out in comments any parent class methods or data fields that the code references.
+  - also, be sure to point out any overridden methods
 
 ### Folder structure
 
