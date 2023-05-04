@@ -3,21 +3,65 @@ package edu.nyu.cs.recursion_exercise;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
+/**
+ * Represents an instance of the Mandlebrot set, a fractal invented by Benoit B. Mandlebrot.
+ * @author Foo Barstein, with comments by Ambrose Lo (hl4777).
+ */
 public final class Mandelbrot extends PApplet {
+	/**
+	 * Maximum value of
+	 */
 	private int max = 64;
+
+	/** 
+	 * An array of float arrays that stores the various shades of gray used in the program.
+	 */
 	private float[][] colors = new float[48][3];
+
+	/**
+	 * Stores the X and Y values of 
+	 */
 	private double viewX = 0.0;
 	private double viewY = 0.0;
+
+
+	/**
+	 * Stores the current zoom scale.
+	 */
 	private double zoom = 1.0;
+
+	/**
+	 * Stores the X and Y values of where the mouse was last clicked.
+	 */
 	private int mousePressedX;
 	private int mousePressedY;
+
+	/**
+	 * Flag that tells the draw() method to redraw the window display.
+	 * Set true by mouseReleased() when the box is drawn.
+	 * Set false at the end of every call of draw().
+	 */
 	private boolean renderNew = true;
+
+	/**
+	 * Flag that tells the program that a box is being drawn for zooming in.
+	 * Set true by mousePressed() when the left mouse button is pressed.
+	 * Set false by mouseReleased() when the right mouse button is pressed.
+	 */
 	private boolean drawBox = false;
 
+	/**
+	 * Initialises the size of the Processing applet window.
+	 * @Override settings() method from PApplet.
+	 */
 	public void settings() {
 		this.size(600,400);
 	}
 
+	/**
+	 * Initialises the colour array.
+	 * @Override setup() method from PApplet.
+	 */
 	public void setup() {
 		for (int i = 0; i < colors.length; i++) {
 			int c = 2 * i * 256 / colors.length;
@@ -28,6 +72,10 @@ public final class Mandelbrot extends PApplet {
 		}
 	}
 
+	/**
+	 * Draws the window whenever it needs to be updated.
+	 * @Override draw() method from PApplet.
+	 */
 	public void draw() {
 
 		if (!renderNew && !this.drawBox) return;
@@ -69,12 +117,21 @@ public final class Mandelbrot extends PApplet {
 		return value == this.max ? 0 : value;
 	}
 
+	/**
+	 * Stores the location of the first mouse-press.
+	 * Initialises the drawBox flag for zooming in.
+	 * @Override mousePressed() method from PApplet.
+	 */
 	public void mousePressed() {
 		this.mousePressedX = this.mouseX;
 		this.mousePressedY = this.mouseY;
 		this.drawBox = true;
 	}
 
+	/**
+	 * 
+	 * @Override mouseReleased() method from PApplet.
+	 */
 	public void mouseReleased() {
 		int mouseReleasedX = this.mouseX;
 		int mouseReleasedY = this.mouseY;
@@ -100,6 +157,10 @@ public final class Mandelbrot extends PApplet {
 		this.renderNew = true;
 	}
 
+	/**
+	 * Runs the program drawing a Mandelbrot set using the Processing library.
+	 * @param args 
+	 */
 	public static void main(String[] args) {
 		PApplet.main("edu.nyu.cs.recursion_exercise.Mandelbrot");
 	}
