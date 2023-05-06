@@ -129,11 +129,11 @@ public final class Mandelbrot extends PApplet {
 			 * Together, these two loops run through every point in the window
 			 */
 			for (int x = 0; x < this.width; x++) {
-				//
+				//Calculates the rate of change per pixel
 				double r = zoom / Math.min(this.width, this.height);
-				//
+				//Calculates the x-coordinate location relative to (0,0) on the graph
 				double dx = 2.5 * (x * r + this.viewX) - 2.0;
-				//
+				//Calculates the y-coordinate location relative to (0,0) on the graph
 				double dy = 1.25 - 2.5 * (y * r + this.viewY);
 				//Saves the result of the mandel() method into value.
 				int value = this.mandel(dx, dy);
@@ -192,9 +192,9 @@ public final class Mandelbrot extends PApplet {
 		 * If these conditions are met, recursively runs this code until one is no longer met
 		 */
 		while (value < this.max && zx2 + zy2 < 4.0) {
-			//
+			// Calculates the imaginary part of the iterated function
 			zy = 2.0 * zx * zy + py;
-			//
+			// Calculates the real part of the iterated function
 			zx = zx2 - zy2 + px;
 			//Squares zx and stores it in zx2
 			zx2 = zx * zx;
@@ -212,13 +212,16 @@ public final class Mandelbrot extends PApplet {
 	}
 
 	/**
-	 * Stores the location of the first mouse-press.
-	 * Initialises the drawBox flag for zooming in.
+	 * Stores the location where the mouse is pressed.
+	 * Sets the drawBox flag for zooming in to true.
 	 * @Override mousePressed() method from PApplet.
 	 */
 	public void mousePressed() {
+		//Stores the X-coordinate of the mouse when it is pressed.
 		this.mousePressedX = this.mouseX;
+		//Stores the Y-coordinate of the mouse when it is pressed.
 		this.mousePressedY = this.mouseY;
+		//Sets a flag indicating the box is being drawn.
 		this.drawBox = true;
 	}
 
@@ -227,27 +230,40 @@ public final class Mandelbrot extends PApplet {
 	 * @Override mouseReleased() method from PApplet.
 	 */
 	public void mouseReleased() {
+		//Initialises and stores the X-coordinate of where the mouse is when it is released
 		int mouseReleasedX = this.mouseX;
+		//Initialises and stores the Y-coordinate of where the mouse is when it is released
 		int mouseReleasedY = this.mouseY;
+		//checks if this was a left click
 		if (this.mouseButton == PConstants.LEFT) {
+			//checks whether the release location is the same as the press location
 			if (mouseReleasedX != mousePressedX && mouseReleasedY != mousePressedY) {
+				//Initialises and stores the width of the window
 				int w = this.width;
+				//Initialises and stores the height of the window
 				int h = this.height;
+				//Stores the x-coordinate of the zoom window relative to the initial window
 				this.viewX += this.zoom * Math.min(mouseReleasedX, mousePressedX) / Math.min(w, h);
+				//Stores the y-coordinate of the zoom window relative to the initial window
 				this.viewY += this.zoom * Math.min(mouseReleasedY, mousePressedY) / Math.min(w, h);
+				//Stores the increased zoom scale
 				this.zoom *= Math.max((double)Math.abs(mouseReleasedX - mousePressedX) / w, (double)Math.abs(mouseReleasedY - mousePressedY) / h);
 			}
 		}
+		//checks if this was a right click
 		else if (this.mouseButton == PConstants.RIGHT) {
+			//increases the detail level by 25%
 			this.max += max / 4;
 		}
+		//resets all variables if the mouse button clicked is neither left or right
 		else {
 			this.max = 64;
 			this.viewX = this.viewY = 0.0;
 			this.zoom = 1.0;
 		}
-
+		//sets flag indicating that the box is no longer being drawn
 		this.drawBox = false;
+		//sets flag to re-render the window
 		this.renderNew = true;
 	}
 
