@@ -9,7 +9,7 @@ import processing.core.PConstants;
  */
 public final class Mandelbrot extends PApplet {
 	/**
-	 * Maximum value of
+	 * Maximum detail level
 	 */
 	private int max = 64;
 
@@ -55,6 +55,11 @@ public final class Mandelbrot extends PApplet {
 	 * @Override settings() method from PApplet.
 	 */
 	public void settings() {
+		/*
+		 * Sets up the window size
+		 * Parameters: int Width, int Height
+		 * Inherited from PApplet
+		 */
 		this.size(600,400);
 	}
 
@@ -63,11 +68,17 @@ public final class Mandelbrot extends PApplet {
 	 * @Override setup() method from PApplet.
 	 */
 	public void setup() {
+		//runs repeatedly to fill the array
 		for (int i = 0; i < colors.length; i++) {
+			//evenly distributes the shades of grey
 			int c = 2 * i * 256 / colors.length;
+			//Reverses the direction of colour gradient if c is greater than 255
 			if (c > 255)
 				c = 511 - c;
+			//stores an array of floats which represents a certain shade of grey
 			float[] color = {c, c, c};
+
+			//stores said array in colors
 			this.colors[i] = color;
 		}
 	}
@@ -78,42 +89,125 @@ public final class Mandelbrot extends PApplet {
 	 */
 	public void draw() {
 
+		//escapes this call of the draw() method if the flags renderNew and drawBox are both false, i.e. if there is nothing new to draw
 		if (!renderNew && !this.drawBox) return;
+
+		/*
+		 * resets the background into a solid colour
+		 * Parameters: float Red, float Green, float Blue
+		 * Inherited from PApplet
+		 */
 		this.background(0, 0, 0);
+
+		//checks whether a box is being drawn
 		if (this.drawBox) {
+			/* 
+			* Sets the rectangle to be drawn to not be filled
+			* Inherited from PApplet
+			*/ 
 			this.noFill();
+			/* 
+			* Sets the colour of the borders of the rectangle
+			* Parameters: float Red, float Green, float Blue
+			* Inherited from PApplet
+			*/
 			this.stroke(255, 0, 0);
+			/*
+			 * Draws a rectangle with the top left corner from where the mouse was first pressed and the bottom right corner where the mouse currently is
+			 * Parameters: int firstCornerX, int firstCornerY, int width, int height
+			 * Inherited from PApplet
+			 * Variables mouseX and mouseY inherited from PApplet
+			 */
 			rect(this.mousePressedX, this.mousePressedY, this.mouseX - this.mousePressedX, this.mouseY - this.mousePressedY);
 		}
+		/*
+		 * Runs through every height in the window
+		 */
 		for (int y = 0; y < this.height; y++) {
+			/*
+			 * Runs through every width per height
+			 * Together, these two loops run through every point in the window
+			 */
 			for (int x = 0; x < this.width; x++) {
+				//
 				double r = zoom / Math.min(this.width, this.height);
+				//
 				double dx = 2.5 * (x * r + this.viewX) - 2.0;
+				//
 				double dy = 1.25 - 2.5 * (y * r + this.viewY);
+				//Saves the result of the mandel() method into value.
 				int value = this.mandel(dx, dy);
+				/*
+				 * Modulus operator called to choose the grey used for this point from the colors float array declared in setup()
+				 * Stores it in a new array color to be called in the next method.
+				 */
 				float[] color = this.colors[value % this.colors.length];
+				/* Sets the colour of the point to the colour decided above
+				 * Parameters: int Red, int Green, int Blue
+				 * Inherited from PApplet
+				 */
 				this.stroke(color[0], color[1], color[2]);
+				/*
+				 * Draws a dot using the line() method by starting and ending the line at the same point
+				 * Parameters: int firstPointX, int firstPointY, int secondPointX, int secondPointY
+				 * Inherited from PApplet
+				 */
 				this.line(x, y, x, y);
 			}
 		}
-		
+		/*
+		 * Sets text to align the centre to the XY coordinates given in future methods
+		 * Parameters: int alignment
+		 * Inherited from PApplet
+		 */
 		this.textAlign(PConstants.CENTER);
+
+		/*
+		 * Creates text at the specified location to instruct the app user
+		 * Parameters: String text, int x, int y
+		 * Inherited from PApplet
+		 */
 		this.text("Click and drag to draw an area to zoom into.", this.width / 2, this.height-20);
 
+		//Resets flag, telling the program there is nothing new to draw.
 		this.renderNew = false;
 	}
 
+	/** Checks how many iterations this point undergoes
+	 * @param px The X coordinate of the current point
+	 * @param py The Y coordinate of the current point
+	 * @return An integer representing the number of times it took to 
+	 */
 	private int mandel(double px, double py) {
+		//Stores the current working point
 		double zx = 0.0, zy = 0.0;
+		//Stores zx squared and zy squared respectively
 		double zx2 = 0.0, zy2 = 0.0;
+		//Stores the number of iterations
 		int value = 0;
+		/*
+		 * Checks two conditions and runs math:
+		 * First condition value < this.max ensures that the code runs in a timely manner by setting a limit on how many times the while loop can run per point
+		 * Second condition zx2 + zy2 < 4.0 checks whether the sum of their squares exceeds 4.0, meaning that it will diverge infinitely.
+		 * If these conditions are met, recursively runs this code until one is no longer met
+		 */
 		while (value < this.max && zx2 + zy2 < 4.0) {
+			//
 			zy = 2.0 * zx * zy + py;
+			//
 			zx = zx2 - zy2 + px;
+			//Squares zx and stores it in zx2
 			zx2 = zx * zx;
+			//Squares zy and stores it in zy2
 			zy2 = zy * zy;
+			//Increments the number of iterations
 			value++;
 		}
+		/*
+		 * Uses a ternary operator to return a value based on whether the number is too large or not
+		 * If the value is equal to the maximum detail level, returns 0 to indicate that this pixel should be coloured black
+		 * If not, returns the value calculated (number of times the while loop ran)
+		 */
 		return value == this.max ? 0 : value;
 	}
 
